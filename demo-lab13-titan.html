@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2ea">
+  <title>Lab 13 · Titan · Demo hồ sơ Gate 2a</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f2ea;
+      --card: #fffefa;
+      --ink: #1d2927;
+      --muted: #64716c;
+      --line: #dedfd4;
+      --green: #245c49;
+      --green-soft: #e4f0e9;
+      --amber: #80530c;
+      --amber-soft: #f7edcf;
+      --red: #943d32;
+      --red-soft: #f6e5e0;
+      --blue: #315a70;
+      --blue-soft: #e4eef2;
+      --shadow: 0 14px 36px rgba(32, 46, 39, .07);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.55; }
+    a { color: var(--green); text-underline-offset: 3px; }
+    a:hover { color: #123d2e; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 5; border-bottom: 1px solid var(--line);
+      background: rgba(245, 242, 234, .94); backdrop-filter: blur(12px);
+    }
+    .nav { min-height: 58px; display: flex; align-items: center; gap: 18px; overflow-x: auto; }
+    .brand { white-space: nowrap; font-weight: 800; letter-spacing: -.03em; margin-right: auto; }
+    .nav a { flex: 0 0 auto; color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 650; }
+    .nav a:hover { color: var(--ink); }
+    header { padding: 62px 0 34px; }
+    .eyebrow { color: var(--green); font-size: .77rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 800; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 820px; font-size: clamp(2.4rem, 6vw, 4.5rem); line-height: 1.03; letter-spacing: -.065em; margin: 12px 0 18px; }
+    h2 { font-size: clamp(1.7rem, 3vw, 2.45rem); letter-spacing: -.045em; line-height: 1.12; margin-bottom: 10px; }
+    h3 { font-size: 1.1rem; letter-spacing: -.02em; margin-bottom: 8px; }
+    .lead { max-width: 760px; color: var(--muted); font-size: 1.15rem; }
+    .notice { margin-top: 24px; padding: 14px 17px; border-left: 4px solid var(--amber); border-radius: 0 12px 12px 0; background: var(--amber-soft); color: #4c3a16; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 25px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 15px; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--card); color: var(--ink); text-decoration: none; font-weight: 700;
+    }
+    .button.primary { background: var(--green); border-color: var(--green); color: white; }
+    .section { padding: 43px 0; border-top: 1px solid var(--line); }
+    .section-intro { max-width: 780px; color: var(--muted); margin-bottom: 22px; }
+    .grid { display: grid; gap: 14px; }
+    .grid.stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { min-width: 0; padding: 20px; border: 1px solid var(--line); border-radius: 17px; background: var(--card); box-shadow: var(--shadow); }
+    .metric { font-size: clamp(1.7rem, 3vw, 2.35rem); font-weight: 820; letter-spacing: -.06em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .label { color: var(--muted); font-size: .9rem; margin-top: 9px; }
+    .small { color: var(--muted); font-size: .88rem; }
+    .tag { display: inline-flex; align-items: center; padding: 4px 9px; border-radius: 999px; font-size: .77rem; font-weight: 800; }
+    .tag.green { background: var(--green-soft); color: var(--green); }
+    .tag.amber { background: var(--amber-soft); color: var(--amber); }
+    .tag.red { background: var(--red-soft); color: var(--red); }
+    .tag.blue { background: var(--blue-soft); color: var(--blue); }
+    .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    table { width: 100%; border-collapse: collapse; min-width: 650px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); background: #faf9f4; font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; }
+    tr:last-child td { border-bottom: 0; }
+    td.num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .barlist { display: grid; gap: 12px; }
+    .bar-row { display: grid; grid-template-columns: minmax(125px, 185px) 1fr 70px; gap: 12px; align-items: center; }
+    .bar-label { font-size: .9rem; }
+    .track { height: 12px; border-radius: 999px; background: #ecece4; overflow: hidden; }
+    .fill { height: 100%; border-radius: inherit; background: var(--green); }
+    .fill.amber { background: #d29b35; }
+    .fill.red { background: #bd6650; }
+    .bar-value { text-align: right; font-weight: 750; font-size: .88rem; font-variant-numeric: tabular-nums; }
+    .case-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .case { min-width: 34px; text-align: center; padding: 5px 9px; border: 1px solid var(--line); border-radius: 9px; background: #faf9f4; font-variant-numeric: tabular-nums; font-weight: 700; }
+    .callout { padding: 15px 17px; border-radius: 13px; background: var(--blue-soft); color: #244252; }
+    .rule { border-left: 4px solid var(--green); }
+    .rule p:last-child, .card p:last-child { margin-bottom: 0; }
+    details { border: 1px solid var(--line); border-radius: 14px; background: var(--card); padding: 14px 16px; }
+    details + details { margin-top: 10px; }
+    summary { cursor: pointer; font-weight: 750; }
+    .footer { padding: 34px 0 55px; border-top: 1px solid var(--line); color: var(--muted); }
+    .links { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+    .pending { padding: 17px; border: 1px solid #e8c8bd; border-radius: 14px; background: var(--red-soft); color: #653128; }
+    .kpi-good { color: var(--green); }
+    .kpi-warn { color: var(--amber); }
+    .mono { font-family: Consolas, "Courier New", monospace; font-size: .9em; }
+    @media (max-width: 820px) {
+      .grid.stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid.three { grid-template-columns: 1fr; }
+      .nav { gap: 13px; }
+    }
+    @media (max-width: 560px) {
+      .grid.two, .grid.stats { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 1fr 54px; gap: 5px 10px; }
+      .bar-label { grid-column: 1 / -1; }
+      .bar-value { grid-column: 2; grid-row: 2; }
+      .track { grid-column: 1; grid-row: 2; }
+      header { padding-top: 42px; }
+    }
+    @media print {
+      .topbar, .hero-actions { display: none; }
+      body { background: white; }
+      .card { box-shadow: none; break-inside: avoid; }
+      .section { padding: 24px 0; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Điều hướng nội dung">
+    <div class="wrap nav">
+      <span class="brand">TITAN · LAB 13</span>
+      <a href="#tong-quan">Tổng quan</a>
+      <a href="#a">A · Chi phí</a>
+      <a href="#b">B · Độ nhạy</a>
+      <a href="#c">C · Lỗi</a>
+      <a href="#d">D · Pilot</a>
+      <a href="#e">E · Chỉ số</a>
+      <a href="#quyet-dinh">Quyết định</a>
+    </div>
+  </nav>
+
+  <header id="tong-quan">
+    <div class="wrap">
+      <div class="eyebrow">LogiX-VN · Gate 2a · Nhóm Titan · L3B</div>
+      <h1>Từ trace đến quyết định pilot.</h1>
+      <p class="lead">Bản demo tổng hợp hồ sơ A–E: chi phí, độ nhạy, phân loại lỗi, thiết kế pilot và chỉ số theo dõi.</p>
+      <div class="notice"><strong>Lưu ý:</strong> thời gian xem lại/làm lại và các ước tính kinh tế có dùng trường <span class="mono">_simulated</span> đều được đánh dấu. Mẫu 1.200 yêu cầu không có nhóm đối chứng; đây là số mô tả, không chứng minh quan hệ nhân quả.</div>
+      <div class="hero-actions">
+        <a class="button primary" href="#quyet-dinh">Xem đề xuất Gate 2a</a>
+        <a class="button" href="#deliverables">Xem hồ sơ và phần còn chờ</a>
+        <button class="button" type="button" onclick="window.print()">In / lưu PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <div class="grid stats">
+          <article class="card"><div class="metric">4.472 đ</div><div class="label">chi phí / việc thành công <span class="tag amber">simulated</span></div></article>
+          <article class="card"><div class="metric">978 / 1.200</div><div class="label">yêu cầu thành công trong mẫu</div></article>
+          <article class="card"><div class="metric">82,83%</div><div class="label">đóng trong 24h, không mở lại 7 ngày</div></article>
+          <article class="card"><div class="metric">4,25%</div><div class="label">yêu cầu mở lại trong 7 ngày</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="a">
+      <div class="wrap">
+        <div class="eyebrow">A · Kinh tế</div>
+        <h2>Chi phí thật lớn hơn hoá đơn model.</h2>
+        <p class="section-intro">Ba phép thử A1 đạt: 1,20 lần chạy với giới hạn 2; 1,25 lần chạy đến khi đúng; hệ số chi phí mỗi thành công 1,25 với tối đa 3 lần.</p>
+        <div class="grid two">
+          <article class="card">
+            <h3>A2 · Cấu phần chi phí</h3>
+            <div class="barlist" aria-label="Tỉ trọng cấu phần chi phí">
+              <div class="bar-row"><span class="bar-label">Token · 245.585 đ</span><div class="track"><div class="fill" style="width:5.6%"></div></div><span class="bar-value">5,6%</span></div>
+              <div class="bar-row"><span class="bar-label">Tool · 84.000 đ</span><div class="track"><div class="fill" style="width:1.9%"></div></div><span class="bar-value">1,9%</span></div>
+              <div class="bar-row"><span class="bar-label">Xem lại · 1.780.000 đ</span><div class="track"><div class="fill amber" style="width:40.7%"></div></div><span class="bar-value">40,7%</span></div>
+              <div class="bar-row"><span class="bar-label">Làm lại · 2.264.000 đ</span><div class="track"><div class="fill red" style="width:51.8%"></div></div><span class="bar-value">51,8%</span></div>
+            </div>
+            <p class="small" style="margin-top:16px">Tổng 4.373.585 đ; 978 thành công; 4.472 đ/việc thành công [simulated]. Token + tool chia 1.200 yêu cầu chỉ là 274,7 đ.</p>
+          </article>
+          <article class="card">
+            <h3>A3 · Chi phí theo loại</h3>
+            <div class="scroll">
+              <table>
+                <thead><tr><th>Loại</th><th>Số ca</th><th>Thành công</th><th>Chi phí / thành công</th><th>So baseline</th></tr></thead>
+                <tbody>
+                  <tr><td>noi_dia</td><td class="num">824</td><td>95,0%</td><td>2.696 đ <span class="tag amber">simulated</span></td><td>0,22×</td></tr>
+                  <tr><td>hang_nang</td><td class="num">158</td><td>74,1%</td><td>8.221 đ <span class="tag amber">simulated</span></td><td>0,69×</td></tr>
+                  <tr><td>quoc_te</td><td class="num">150</td><td>27,3%</td><td>22.515 đ <span class="tag amber">simulated</span></td><td>1,88×</td></tr>
+                  <tr><td>doi_tac</td><td class="num">68</td><td>54,4%</td><td>10.215 đ <span class="tag amber">simulated</span></td><td>0,85×</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+        <div class="grid two" style="margin-top:14px">
+          <article class="card"><h3>A4 · Chi phí cố định</h3><p>Trong phạm vi <span class="mono">noi_dia + hang_nang</span>, 45.000 yêu cầu/tháng tạo khoảng 33.750 việc thành công; 40 triệu đ cố định tương đương 1.185 đ/việc. Tổng là 4.599 đ = 0,38× baseline [simulated].</p></article>
+          <article class="card"><h3>Đọc kết quả đúng</h3><p><span class="tag red">Không pilot quoc_te</span> Thành công 27,3%, CPS 22.515 đ = 1,88× baseline [simulated]. Các lần chạy sau cho tỉ lệ đúng thấp hơn: 30% → 11,4% → 2,2%.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="b">
+      <div class="wrap">
+        <div class="eyebrow">B · Độ nhạy</div>
+        <h2>Lao động làm lại chi phối kinh tế.</h2>
+        <p class="section-intro">Thay đổi CPS so với gốc 4.472 đ. Tất cả kết quả kinh tế bên dưới có phần chi phí nhân viên [simulated].</p>
+        <div class="grid two">
+          <article class="card">
+            <h3>B1 · Tác động theo kịch bản</h3>
+            <div class="barlist">
+              <div class="bar-row"><span class="bar-label">Token ×2</span><div class="track"><div class="fill" style="width:11%"></div></div><span class="bar-value">+5,6%</span></div>
+              <div class="bar-row"><span class="bar-label">Xem lại ×2</span><div class="track"><div class="fill amber" style="width:81%"></div></div><span class="bar-value">+40,7%</span></div>
+              <div class="bar-row"><span class="bar-label">Làm lại ×2</span><div class="track"><div class="fill red" style="width:100%"></div></div><span class="bar-value">+51,8%</span></div>
+              <div class="bar-row"><span class="bar-label">Lương +25%</span><div class="track"><div class="fill amber" style="width:46%"></div></div><span class="bar-value">+23,1%</span></div>
+            </div>
+            <p class="small" style="margin-top:14px">Xếp hạng: số ca làm lại · tỉ lệ xem lại · lương nhân viên.</p>
+          </article>
+          <article class="card">
+            <h3>B3 · Giới hạn số lần chạy</h3>
+            <div class="scroll">
+              <table>
+                <thead><tr><th>Giới hạn</th><th>Chi phí cả hệ thống</th><th>Không thành công</th><th>CPS</th></tr></thead>
+                <tbody>
+                  <tr><td>1 lần</td><td>7.449.781 đ</td><td>319</td><td>4.111 đ</td></tr>
+                  <tr><td>2 lần</td><td><strong>6.901.220 đ</strong></td><td>234</td><td>4.237 đ</td></tr>
+                  <tr><td>3 lần</td><td>7.037.585 đ</td><td>222</td><td>4.472 đ</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="small" style="margin-top:12px">2 lần rẻ nhất cho công ty; 1 lần cho CPS thấp nhất, nhưng chuyển thêm 85 việc cho nhân viên. [simulated]</p>
+          </article>
+        </div>
+        <div class="grid two" style="margin-top:14px">
+          <article class="card"><h3>B2 · Đổi một cặp</h3><p>Giá token ×2 cùng tỉ lệ xem lại ×2 → 6.543 đ/việc, tăng 46,3% [simulated].</p></article>
+          <article class="card"><h3>B4 · Xem lại 100%</h3><p>11.743 đ = 0,98× baseline; nếu làm lại trung bình 15,3 phút/ca thì 12.415 đ = 1,03× [simulated]. Pilot cần đo thời gian thật và thử giảm xem lại an toàn theo từng bước.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="c">
+      <div class="wrap">
+        <div class="eyebrow">C · Google PAIR</div>
+        <h2>20 ca lỗi, 5 nguyên nhân gốc.</h2>
+        <p class="section-intro">Hai thành viên ở vai kiểm thử và lập trình web đã gắn nhãn độc lập 20 ca; đồng thuận 20/20 (100%). Tên cụ thể cần được bổ sung vào TEAM.</p>
+        <div class="grid three">
+          <article class="card"><span class="tag blue">Do người dùng · 4</span><div class="case-list"><span class="case">1</span><span class="case">6</span><span class="case">9</span><span class="case">14</span></div><p class="small">Đầu vào hoặc thao tác của khách sai.</p></article>
+          <article class="card"><span class="tag red">Hệ thống · 5</span><div class="case-list"><span class="case">2</span><span class="case">7</span><span class="case">8</span><span class="case">15</span><span class="case">20</span></div><p class="small">Agent, tool hoặc tích hợp làm sai; lỗi có thể nhìn thấy.</p></article>
+          <article class="card"><span class="tag amber">Ngữ cảnh · 4</span><div class="case-list"><span class="case">3</span><span class="case">10</span><span class="case">16</span><span class="case">18</span></div><p class="small">Thiết kế đúng nhưng giả định không khớp hoàn cảnh.</p></article>
+          <article class="card"><span class="tag blue">Giới hạn hệ thống · 4</span><div class="case-list"><span class="case">4</span><span class="case">11</span><span class="case">13</span><span class="case">19</span></div><p class="small">Thiếu dữ liệu, ngoài phạm vi hoặc không hỗ trợ dạng đầu vào.</p></article>
+          <article class="card"><span class="tag red">Ngầm · 3</span><div class="case-list"><span class="case">5</span><span class="case">12</span><span class="case">17</span></div><p class="small">Sai sót chỉ lộ ra khi kiểm toán hoặc kiểm tra mẫu.</p></article>
+          <article class="card"><h3>5 biện pháp đại diện</h3><p>Kiểm tra đầu vào >2%/ngày; đối soát hoàn tiền mỗi giờ; theo dõi mở lại vì tiền hàng tuần; log chuyển người theo loại; kiểm toán 100 đơn/tuần, ngưỡng sai 1%.</p></article>
+        </div>
+        <details style="margin-top:14px">
+          <summary>Xem chủ sở hữu biện pháp</summary>
+          <ul>
+            <li>Ca 9 · input validation: PM trợ lý hoàn phí.</li>
+            <li>Ca 7 · xác nhận sổ cái: Kỹ sư trưởng agent.</li>
+            <li>Ca 18 · giải thích cách tính: Trưởng nhóm CSKH.</li>
+            <li>Ca 4 · thiếu dữ liệu / handoff: PM trợ lý hoàn phí.</li>
+            <li>Ca 17 · bảng giá cũ: Kế toán trưởng.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="d">
+      <div class="wrap">
+        <div class="eyebrow">D · Thiết kế pilot</div>
+        <h2>Chia theo nhân viên, chấp nhận MDE 6 điểm.</h2>
+        <p class="section-intro">40 nhân viên không đủ để phát hiện mục tiêu 5 điểm theo cụm. Chọn 20 người mỗi nhánh, ngẫu nhiên phân tầng theo depot; nếu tác động thật chỉ 5 điểm, power khoảng 0,64.</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Câu D1</th><th>Tính toán</th><th>Kết luận</th></tr></thead>
+            <tbody>
+              <tr><td>Theo yêu cầu</td><td>Baseline 0,70 → 0,75; alpha 0,05, power 0,80</td><td>1.251 yêu cầu/nhánh</td></tr>
+              <tr><td>Theo nhân viên (75 yêu cầu/người)</td><td>DE = 1 + 74 × 0,02 = 2,48</td><td>3.103/nhánh ≈ 42 người; cần 84, có 40</td></tr>
+              <tr><td>20 nhân viên/nhánh</td><td>Trần hiệu dụng c/ICC = 20/0,02</td><td>1.000 &lt; 1.251, không đủ 5 điểm</td></tr>
+              <tr><td>6 depot/nhánh</td><td>Trần hiệu dụng 6/0,02</td><td>300, không đủ</td></tr>
+              <tr><td>MDE 6 điểm</td><td>859 yêu cầu hiệu dụng; 5.980 thô/nhánh (20 × 299); DE 6,96</td><td>Phương án được chọn; 20 cụm/nhánh</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid two" style="margin-top:14px">
+          <article class="card"><h3>An toàn</h3><p>Mở lại 7 ngày: 4,25% toàn mẫu (51/1.200), 3,97% ở `noi_dia + hang_nang`. Dừng ở mọi giai đoạn nếu vượt trần 6% hoặc có hoàn trùng / báo đã hoàn nhưng thiếu bản ghi sổ cái. Chỉ áp ngưỡng chênh ≥2 điểm sau đủ 20 người mỗi nhánh và đủ 7 ngày theo dõi.</p></article>
+          <article class="card"><h3>Chống lây nhiễm</h3><p>Control chạy cùng thời gian và depot. Phân tầng ngẫu nhiên theo depot, seed kế hoạch 20261125; lưu bảng phân nhóm trước khi bắt đầu. Giới hạn quyền dùng theo tài khoản, log theo `staff_id` và `trace_id`.</p></article>
+        </div>
+        <div class="grid three" style="margin-top:14px">
+          <article class="card rule"><span class="tag red">Dừng an toàn</span><p>Nếu ngưỡng an toàn bị vượt → Giám đốc vận hành tắt trong 30 phút; nếu không, không được lên rollout kế tiếp.</p></article>
+          <article class="card rule"><span class="tag amber">Dừng chi phí</span><p>Nếu CPS &gt;8.000 đ trong 2 tuần → PM thu hẹp về `noi_dia`, tối đa 2 lần chạy; không mở `hang_nang`.</p></article>
+          <article class="card rule"><span class="tag blue">Dừng mức dùng</span><p>Nếu bỏ qua gợi ý &gt;40% trong 1 tuần → Trưởng nhóm CSKH phỏng vấn 5 người trong 3 ngày; chưa chuyển rollout.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="e">
+      <div class="wrap">
+        <div class="eyebrow">E · Đo lường & rủi ro</div>
+        <h2>Chỉ số phải nối được về event.</h2>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Loại</th><th>Chỉ số hiện tại</th><th>Event tính / cần thu</th></tr></thead>
+            <tbody>
+              <tr><td>Chính</td><td>82,83% — đóng ≤24h và không mở lại 7 ngày (994/1.200)</td><td><code>refund_request_created</code> + <code>ticket_closed</code> + không có <code>ticket_reopened</code></td></tr>
+              <tr><td>Dùng</td><td>27,12% — bỏ qua gợi ý (48/177)</td><td><code>staff_review_decision</code> (`sua`/`bo`)</td></tr>
+              <tr><td>An toàn</td><td>4,25% — mở lại 7 ngày (51/1.200)</td><td><code>ticket_reopened</code></td></tr>
+              <tr><td>Dùng bổ sung</td><td>Chưa có baseline: mở trợ lý trong nhóm treatment</td><td><code>assistant_panel_opened</code> / số request treatment</td></tr>
+              <tr><td>An toàn bổ sung</td><td>Chưa có baseline: tỉ lệ sai tiền trong audit mẫu</td><td><code>audit_sample_checked</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small" style="margin-top:12px">Event khác: `agent_run_completed`, `agent_suggestion_shown`, `staff_rework_completed`, `refund_ledger_write`, `handoff_to_staff`. Tất cả mang `trace_id`.</p>
+        <div class="grid three" style="margin-top:14px">
+          <article class="card"><h3>Làm lại tăng</h3><p>×2 làm chi phí lên 6.787 đ (+51,8%) [simulated]. Theo dõi tỉ lệ >7%/tuần; PM rà 20 trace và thu hẹp phạm vi.</p></article>
+          <article class="card"><h3>Xem lại 100%</h3><p>11.743 đ =0,98×; với 15,3 phút làm lại là 12.415 đ =1,03× [simulated]. CSKH chỉ giảm review theo bước khi số liệu an toàn.</p></article>
+          <article class="card"><h3>Thiếu khối lượng</h3><p>40 triệu đ cố định tương đương 1.185 đ/việc; khi volume giảm nửa là 2.370 đ/việc [simulated]. PM không mở rộng nếu sản lượng dưới nửa kế hoạch.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="quyet-dinh">
+      <div class="wrap">
+        <div class="eyebrow">Kết luận Gate 2a</div>
+        <h2>Go có điều kiện — không phải mở rộng vận hành.</h2>
+        <p class="section-intro">Đề xuất chỉ bắt đầu pilot cho <strong>noi_dia</strong> và <strong>hang_nang</strong>. Điều kiện dưới đây cần có bằng chứng trước mốc quyết định 2027-01-05.</p>
+        <div class="grid two">
+          <article class="card"><span class="tag amber">Điều kiện 1 · Kỹ sư trưởng agent</span><p>Sửa lỗi sổ cái 503 và chống hoàn trùng (ca 7, 20); kiểm thử gửi lặp để chứng minh mỗi yêu cầu chỉ hoàn một lần.</p><p class="small">Hạn: 2027-01-05</p></article>
+          <article class="card"><span class="tag amber">Điều kiện 2 · Giám đốc vận hành</span><p>Chấp nhận 20 nhân viên mỗi nhánh, 5.980 yêu cầu thô (859 hiệu dụng), MDE 6 điểm và power 0,64 nếu tác động thật chỉ 5 điểm.</p><p class="small">Hạn: 2027-01-05, trước phân nhóm</p></article>
+          <article class="card"><span class="tag amber">Điều kiện 3 · Người phụ trách chỉ số</span><p>Bật event có `trace_id`; thay phút nhân viên `simulated` bằng số đo thật sau tuần đầu.</p><p class="small">Kiểm tra trước pilot; báo cáo sau tuần 1</p></article>
+          <article class="card"><span class="tag green">Nếu không đạt</span><p>Không bật pilot; giữ No-go tới khi có bằng chứng và hội đồng xem xét lại.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="deliverables">
+      <div class="wrap">
+        <div class="eyebrow">Hồ sơ & trạng thái</div>
+        <h2>Đã làm gì, còn chờ gì?</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Hồ sơ đã tổng hợp</h3>
+            <div class="links">
+              <a href="report/team/bang_chi_phi.md">Bảng chi phí A/B</a>
+              <a href="report/team/bang_loi.md">Bảng lỗi C</a>
+              <a href="report/team/pilot_plan.yaml">Pilot plan D</a>
+              <a href="report/team/chi_so.md">Chỉ số E</a>
+              <a href="report/team/ho_so_launch_v0.md">Hồ sơ launch</a>
+              <a href="report/team/group_report.md">Báo cáo nhóm</a>
+              <a href="report/team/2A202604088_NguyenAnhTu.md">Báo cáo cá nhân</a>
+              <a href="SUBMISSION.md">Hướng dẫn nộp</a>
+            </div>
+          </article>
+          <article class="pending">
+            <h3>Chưa hoàn tất — không giả lập bằng chứng</h3>
+            <ul>
+              <li>Chưa có thông tin, vai trò và báo cáo cá nhân của ba thành viên còn lại; chưa ghi tên hai người gắn nhãn vào TEAM.</li>
+              <li>Phiếu chấm chéo chưa có số nhóm và hồ sơ của nhóm peer.</li>
+            </ul>
+          </article>
+        </div>
+        <p class="small" style="margin-top:16px">Bản trình bày này là demo tổng hợp hồ sơ, không thay thế CSV, code hay các file nộp chính thức. Các chi phí dùng dữ liệu nhân viên giả lập được ghi nhãn trong từng mục.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <strong>Lab 13 · Titan · L3B</strong>
+      <p class="small">HTML tĩnh, không cần thư viện hoặc kết nối mạng. Dùng điều hướng trên cùng, mở rộng chi tiết, hoặc in/lưu thành PDF.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,51 +1,57 @@
 # Lab 13 · Nhiệm vụ D · Kế hoạch pilot trợ lý hoàn phí LogiX-VN (Gate 2a)
-# Điền mọi chỗ có dấu hỏi. Khi nộp, ngoài các dòng chú thích không còn dấu hỏi nào.
+# Kết quả D1 (baseline 0,70; alpha 0,05; power 0,80; ICC 0,02):
+#   a) Chia theo yêu cầu: 1.251 yêu cầu mỗi nhóm để phát hiện chênh 5 điểm.
+#   b) Theo nhân viên, m = 75: DE = 2,48; cần 3.103 yêu cầu/nhóm, tương đương 42 nhân viên/nhóm; tổng 84 > 40, không đủ.
+#   c) 20 nhân viên/nhóm: c/ICC = 1.000 yêu cầu hiệu dụng tối đa, thấp hơn 1.251.
+#   d) 6 depot/nhóm: c/ICC = 300 yêu cầu hiệu dụng tối đa.
+#   e) MDE 6 điểm cần 859 yêu cầu hiệu dụng/nhánh; 20 nhân viên x 299 yêu cầu
+#      = 5.980 yêu cầu thô/nhánh; DE = 6,96, tương đương 859 hiệu dụng.
+#      Nếu tác động thật chỉ là 5 điểm, power giảm còn khoảng 0,64.
+# D2: đối chứng chạy cùng thời gian; ngẫu nhiên theo nhân viên, phân tầng theo depot,
+#     seed 20261125; hạn chế chia sẻ và log theo staff_id; 20 cụm mỗi nhánh.
+# Tỉ lệ mở lại 7 ngày hiện tại: 51/1.200 = 4,25%; trong noi_dia + hang_nang: 3,97%.
+# Ngưỡng an toàn: chênh lệch với đối chứng từ 2 điểm phần trăm hoặc trần tuyệt đối 6%.
 # Kiểm tra đọc được: python -c "import yaml; yaml.safe_load(open('../report/team/pilot_plan.yaml'))"
 #
-# D1 · Cỡ mẫu (baseline 0,70; mục tiêu +5 điểm; alpha 0,05; power 0,8; ICC 0,02)
-#   a) Chia theo yêu cầu:
-#   b) Theo nhân viên, m = 75:
-#   c) 20 nhân viên mỗi nhóm:
-#   d) 6 depot mỗi nhóm:
-#   e) Mức chênh 6 điểm (859 mỗi nhóm), 20 nhân viên mỗi nhóm:
-#
-# D2 · Năm câu kiểm tra "tách được tác động" với cách chia đã chọn (mỗi câu một dòng):
-#   1. Đối chứng chạy cùng thời gian:
-#   2. Chia ngẫu nhiên hay do người chọn:
-#   3. Ảnh hưởng gián tiếp và cách giảm:
-#   4. Chỉ số chính, ngưỡng, ngày quyết định đã viết trước:
-#   5. Ít nhất 20 cụm mỗi nhóm:
-#
-# Đánh đổi đã chấp nhận (nếu cách chia chưa đạt cả hai điều kiện):
-#
-# Tỉ lệ mo_lai_trong_7_ngay hiện tại và ngưỡng an toàn đã chọn:
+# Đánh đổi: chia theo nhân viên giảm lây nhiễm hơn chia theo yêu cầu, nhưng chỉ đủ lực thống kê cho MDE 6 điểm.
 
 pilot:
-  owner: "?"                      # một người có tên vai trò, không ghi "cả đội"
-  scope: "?"                      # loại yêu cầu nào, depot nào; dựa vào kết quả A3
+  owner: "Giám đốc vận hành LogiX-VN"
+  scope: "Chỉ noi_dia và hang_nang; loại quoc_te và doi_tac khỏi pilot theo kết quả A3."
   assignment:
-    unit: "?"                     # request | staff | depot
+    unit: "staff"
     control_share: 0.5
     randomized: true
-  rollout: [0.10, 0.25, 0.50]     # mỗi bước một tuần
+    stratification: "depot"
+    seed: 20261125                # seed kế hoạch; lưu bảng phân nhóm trước khi bắt đầu
+  rollout: [0.10, 0.25, 0.50]     # % của 40 nhân viên ở treatment: 4, 10, 20; mỗi bước một tuần
+  rollout_note: "20 nhân viên đối chứng chạy xuyên suốt; chỉ đọc kết quả chính khi đủ 20 treatment và 20 control, sau khi đủ 7 ngày theo dõi."
   primary_metric:
     name: dong_trong_24h_khong_mo_lai_7_ngay
     baseline: 0.70
-    mde: 0.05
+    mde: 0.06                     # đánh đổi: 6 điểm thay vì mục tiêu 5 điểm
     alpha: 0.05
     power: 0.80
-    n_per_arm: "?"
-    design_effect: "?"            # 1 nếu chia theo yêu cầu
-    clusters_per_arm: "?"         # để trống nếu chia theo yêu cầu
+    n_per_arm: 859                # cỡ mẫu hiệu dụng sau điều chỉnh cụm
+    n_observed_per_arm: 5980      # 20 nhân viên x 299 yêu cầu/người
+    requests_per_staff: 299
+    design_effect: 6.96
+    clusters_per_arm: 20
   identifiability:
-    concurrent_control: "?"
-    spillover_risk: "?"
-    predeclared: "?"
+    concurrent_control: "Có: 20 nhân viên đối chứng chạy cùng 20 nhân viên treatment trong cùng tuần và depot."
+    spillover_risk: "Có nguy cơ chia sẻ câu trả lời trong depot; giới hạn quyền dùng theo tài khoản và ghi log mở trợ lý theo staff_id."
+    predeclared: "Có: chốt chỉ số chính, ngưỡng dừng, rollout và ngày quyết định trước khi pilot bắt đầu."
   stop_rules:
-    - "NẾU ? TRONG ? THÌ ? KHÔNG THÌ ?"
-    - "NẾU ? TRONG ? THÌ ? KHÔNG THÌ ?"
-    - "NẾU ? TRONG ? THÌ ? KHÔNG THÌ ?"
-  interim_looks: "chỉ kiểm tra chỉ số an toàn"
-  rollback: "?"                   # ai bấm, mất bao lâu, khách được phục vụ bằng gì
-  decision_date: "?"
-  simulated_inputs: ["?"]         # liệt kê mọi con số giả lập đã dùng
+    - "NẾU tỉ lệ mo_lai_trong_7_ngay vượt trần 6% hoặc có bất kỳ ca hoàn trùng / báo đã hoàn nhưng sổ cái không có bản ghi TRONG bất kỳ lần kiểm tra nào THÌ Giám đốc vận hành tắt trợ lý trong 30 phút KHÔNG THÌ không được chuyển sang bước rollout tiếp theo."
+    - "NẾU tỉ lệ mo_lai_trong_7_ngay của treatment cao hơn control ít nhất 2 điểm phần trăm TRONG 3 lần đo ngày liên tiếp sau khi đủ 20 nhân viên mỗi nhánh và đủ 7 ngày theo dõi THÌ Giám đốc vận hành tạm dừng, rà soát dữ liệu và quyết định tiếp tục hay rollback KHÔNG THÌ chỉ chuyển bước khi cửa sổ theo dõi đã đủ và ngưỡng an toàn cứng chưa bị chạm."
+    - "NẾU chi phí mỗi việc thành công vượt 8.000 đ TRONG 2 tuần liên tiếp THÌ PM thu hẹp phạm vi về noi_dia và giới hạn tối đa 2 lần chạy KHÔNG THÌ không được mở rộng sang hang_nang."
+    - "NẾU tỉ lệ bỏ qua gợi ý vượt 40% TRONG 1 tuần THÌ Trưởng nhóm CSKH phỏng vấn 5 nhân viên trong 3 ngày KHÔNG THÌ không được chuyển bước rollout tiếp theo."
+  interim_looks: "Ở bước 4 và 10 treatment: chỉ kiểm tra ngưỡng an toàn cứng (mở lại >6%, hoàn trùng hoặc sổ cái lệch); chỉ so chênh 2 điểm sau khi đủ 20 treatment + 20 control và đủ 7 ngày theo dõi."
+  rollback: "Giám đốc vận hành bật cờ tắt; hiệu lực trong 30 phút; khách được chuyển sang luồng nhân viên tự xử lý."
+  decision_date: "2027-01-05"
+  simulated_inputs:
+    - "Tỉ lệ baseline 0,70; mục tiêu ban đầu +5 điểm phần trăm; MDE pilot +6 điểm phần trăm."
+    - "Alpha 0,05; power 0,80; ICC 0,02; 40 nhân viên; 20 nhân viên mỗi nhánh; rollout 4, 10, 20 nhân viên treatment, giữ 20 control."
+    - "Cỡ mẫu 1.251 hiệu dụng mỗi nhánh cho MDE 5 điểm; MDE 6 điểm cần 859 hiệu dụng, tương ứng 5.980 yêu cầu thô/nhánh (299/người); design effect 6,96."
+    - "Tỉ lệ mở lại 7 ngày 4,25% (51/1.200); phạm vi noi_dia + hang_nang là 3,97%; trần an toàn 6% và chênh lệch tối đa 2 điểm phần trăm."
+    - "Seed phân tầng theo depot 20261125; ngưỡng chi phí 8.000 đ/việc thành công; ngưỡng bỏ qua gợi ý 40%; 5 nhân viên phỏng vấn; các mốc dừng và rollout nêu trong kế hoạch."

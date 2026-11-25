@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Ba cách chia ai được dùng trợ lý</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@420;520;640;760&family=Literata:opsz,wght@7..72,620;7..72,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --ink: #1c1916;
+    --muted: #5e564c;
+    --card: #fffdf8;
+    --line: #e4d9c8;
+    --clay: #b8431f;
+    --clay-soft: #f8ebe4;
+    --green: #1c6b45;
+    --green-soft: #e6f3ec;
+    --gold: #8a5a12;
+    --gold-soft: #f8f0dc;
+    --shadow: 0 18px 50px rgba(60, 40, 20, .08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "Be Vietnam Pro", "Segoe UI", sans-serif;
+    font-weight: 420;
+    letter-spacing: -0.01em;
+  }
+  .deck { height: 100%; }
+  .slide {
+    display: none;
+    height: 100%;
+    overflow: auto;
+    padding: 40px 64px 96px;
+  }
+  .slide.on { display: flex; flex-direction: column; }
+  h1, h2, .num {
+    font-family: Literata, "Iowan Old Style", Palatino, serif;
+    font-weight: 620;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .kicker {
+    font-size: 13px;
+    font-weight: 640;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 64px; line-height: 1.02; max-width: 16ch; }
+  h2 { font-size: 36px; line-height: 1.15; max-width: 28ch; }
+  .lead { font-size: 22px; line-height: 1.45; color: var(--muted); max-width: 46ch; margin-top: 18px; }
+  .where { font-size: 16px; line-height: 1.4; color: var(--muted); margin: 12px 0 0; max-width: 68ch; }
+  .row { display: flex; gap: 18px; margin-top: 28px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 22px 20px;
+    box-shadow: var(--shadow);
+  }
+  .grow { flex: 1; }
+  .tag {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: 640;
+  }
+  .tag.bad { background: var(--clay-soft); color: var(--clay); }
+  .tag.ok { background: var(--green-soft); color: var(--green); }
+  .tag.warn { background: var(--gold-soft); color: var(--gold); }
+  .num { font-size: 56px; line-height: .95; }
+  .num small { display: block; margin-top: 8px; font-family: "Be Vietnam Pro", sans-serif; font-size: 16px; font-weight: 520; color: var(--muted); letter-spacing: 0; }
+  p { margin: 10px 0 0; font-size: 17px; line-height: 1.45; }
+  .example {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    color: var(--muted);
+    font-size: 16px;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 22px; background: var(--card); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+  th, td { text-align: left; padding: 16px 18px; border-bottom: 1px solid var(--line); font-size: 18px; vertical-align: top; }
+  th { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 640; }
+  tr:last-child td { border-bottom: 0; }
+  .pick { background: #f3faf6; }
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; background: rgba(246, 241, 231, .92);
+    border-top: 1px solid var(--line); backdrop-filter: blur(8px);
+  }
+  button {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; padding: 8px 14px; font: inherit; font-weight: 640; cursor: pointer;
+  }
+  .dots { display: flex; gap: 8px; }
+  .dots i { width: 8px; height: 8px; border-radius: 99px; background: #d9cbb8; display: block; }
+  .dots i.on { background: var(--clay); width: 22px; }
+  .hint { color: var(--muted); font-size: 13px; }
+  .hero { justify-content: center; }
+  .chips { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+  .chip {
+    background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+    padding: 10px 16px; font-weight: 640;
+  }
+  .formula {
+    font-variant-numeric: tabular-nums;
+    background: var(--ink); color: #f6f1e7; border-radius: 16px; padding: 14px 16px;
+    margin-top: 14px; font-size: 17px; line-height: 1.55;
+  }
+  .formula div { white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<section class="slide hero on">
+  <div class="kicker">Lab 13 · Nhiệm vụ D1</div>
+  <h1>Ba cách chia ai được dùng trợ lý.</h1>
+  <p class="lead">Cùng một mục tiêu. Khác chỗ bốc thăm thì số đơn phải gom khác hẳn, và độ tin của kết quả cũng khác.</p>
+  <div class="chips">
+    <span class="chip">1 · Từng đơn</span>
+    <span class="chip">2 · Từng nhân viên</span>
+    <span class="chip">3 · Từng kho</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Câu hỏi chung</div>
+  <h2>Trợ lý có nâng tỉ lệ đơn xong xuôi từ 70% lên 75% không?</h2>
+  <div class="row">
+    <div class="card grow">
+      <div class="num">1.251 <small>đơn mỗi bên</small></div>
+      <p>Nếu bốc từng đơn một, tách bạch, không dính vào cùng một người. Đây là số gốc. Mọi cách kia đều bị so với số này.</p>
+    </div>
+    <div class="card grow">
+      <div class="tag warn">Vì sao không bốc từng đơn</div>
+      <p>Đơn thật nằm trong tay một nhân viên, và nhân viên đứng trong một kho. Mười đơn của một người không đáng giá bằng mười đơn của mười người.</p>
+      <p class="example">Giống mười bài của một học sinh không bằng mười bài của mười học sinh. Các bài trong cùng một người giống nhau.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Cách 1 · Chia theo từng yêu cầu</div>
+  <h2>Mỗi đơn là một vé riêng.</h2>
+  <div class="row">
+    <div class="card">
+      <div class="num">1.251</div>
+      <p>Đơn này trợ lý làm. Đơn kế nhân viên tự làm.</p>
+      <p><span class="tag ok">Đủ mẫu cho 5 điểm</span></p>
+    </div>
+    <div class="card grow">
+      <p><span class="tag bad">Không sạch</span></p>
+      <p>Cùng một nhân viên sáng dùng trợ lý, chiều tự làm. Người đó nhớ câu của trợ lý và mang sang đơn đối chứng. Hai bên không còn tách nhau. Số đẹp, kết luận khó tin.</p>
+      <p class="example">Như vừa cho học sinh xem đáp án bài lẻ, vừa bảo bài kế bên là bài kiểm tra độc lập.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Cách 2 · Chia theo nhân viên</div>
+  <h2>Bốc cả người, không bốc từng đơn.</h2>
+  <div class="row">
+    <div class="card grow">
+      <div class="tag bad">75 đơn mỗi người</div>
+      <div class="formula">
+        <div>1 + 74 × 0,02 = 2,48</div>
+        <div>1.251 × 2,48 = 3.103 đơn</div>
+        <div>3.103 / 75 ≈ 42 người</div>
+      </div>
+      <p>Mỗi bên. Hai bên cần khoảng 84 người. Công ty có 40. Không đủ.</p>
+    </div>
+    <div class="card grow">
+      <div class="tag warn">Chốt 20 người mỗi bên</div>
+      <div class="formula">Trần = số cụm / 0,02<br>20 / 0,02 = 1.000 &lt; 1.251</div>
+      <p>75 đơn chỉ còn khoảng 605 đơn hiệu dụng. 10.000 đơn cũng chỉ sát 995. Dừng dưới 1.000.</p>
+      <p class="example">Sạch hơn cách bốc đơn: người A luôn dùng trợ lý, người B không bao giờ dùng.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Cách 3 · Chia theo kho</div>
+  <h2>Bật một công tắc cho cả depot.</h2>
+  <div class="row">
+    <div class="card">
+      <div class="num">300 <small>trần mỗi bên</small></div>
+      <p>Cùng trần: 6 kho / 0,02 = 300. Xa mốc 1.251.</p>
+    </div>
+    <div class="card grow">
+      <p><span class="tag bad">Loại</span></p>
+      <p>Sáu kho bật, sáu kho tắt. Sáu cụm dưới mức 20 cụm. May một kho giỏi là cả kết quả đổ.</p>
+      <p class="example">Như sáu lớp. Một lớp giỏi là tưởng sách thắng.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Vì sao có trần · cách 2 và cách 3</div>
+  <h2>Thêm đơn trong cùng một cụm không vượt c / 0,02.</h2>
+  <div class="row">
+    <div class="card grow">
+      <div class="tag warn">Công thức</div>
+      <div class="formula">
+        <div>DE = 1 + (m − 1) × 0,02</div>
+        <div>n hiệu dụng = c × m / DE</div>
+        <div>m rất lớn → n ≈ c / 0,02</div>
+      </div>
+      <p>c là số cụm mỗi bên. m là số đơn mỗi cụm. m lớn thì DE gần bằng m × 0,02, nên m trên và dưới gần như triệt tiêu.</p>
+    </div>
+    <div class="card grow">
+      <div class="tag bad">20 người và 6 kho</div>
+      <div class="formula">
+        <div>20 người, 75 đơn ≈ 605</div>
+        <div>20 người, 1.000 đơn ≈ 953</div>
+        <div>20 người, 10.000 đơn ≈ 995</div>
+        <div>6 kho → trần 300</div>
+      </div>
+      <p class="example">Mười bài của một học sinh không thành mười bài độc lập. Đơn mới trong cùng người, cùng kho, chỉ mua thêm một ít thông tin.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Đặt cạnh nhau</div>
+  <h2>Chỉ một cách vừa tách được, vừa sửa được cỡ mẫu.</h2>
+  <table>
+    <thead>
+      <tr><th>Cách chia</th><th>Thấy mức hơn 5 điểm?</th><th>Hai bên có tách nhau?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Từng đơn</td>
+        <td>Có, 1.251 đơn</td>
+        <td>Kém. Cùng một người vừa dùng vừa không dùng.</td>
+      </tr>
+      <tr class="pick">
+        <td>Từng nhân viên</td>
+        <td>Không với 5 điểm. Có nếu chấp nhận 6 điểm.</td>
+        <td>Tốt. 20 người mỗi bên, bốc ngẫu nhiên.</td>
+      </tr>
+      <tr>
+        <td>Từng kho</td>
+        <td>Không. Trần 300.</td>
+        <td>Chỉ 6 cụm. Dễ triển khai, khó tin.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="slide">
+  <div class="kicker">Cách được chọn</div>
+  <h2>Chia theo nhân viên. Chấp nhận nhìn mức hơn 6 điểm.</h2>
+  <div class="row">
+    <div class="card grow">
+      <div class="num">299 <small>đơn mỗi người</small></div>
+      <p>20 người × 299 = 5.980 đơn thô mỗi nhánh. Chia cho hệ số thiết kế 6,96 còn khoảng 859 đơn hiệu dụng. Đây là cỡ vừa đủ để thấy mức hơn 6 điểm, không phải 5.</p>
+      <p>Nếu trợ lý thật ra chỉ hơn 5 điểm, cuộc thử chỉ còn khoảng 64% cơ hội nhìn thấy. Phải nói điều này trước khi chạy.</p>
+    </div>
+    <div class="card grow">
+      <div class="tag warn">Đừng họp sau đúng 7 ngày</div>
+      <p>Không chốt thời gian gom mẫu chỉ từ tổng 1.500 đơn/ngày: phạm vi pilot chỉ gồm `noi_dia` và `hang_nang`. Theo dõi số đơn thuộc phạm vi thực tế trên từng nhân viên cho tới khi đủ 299/người.</p>
+      <p class="example">Mỗi đơn cần đủ 7 ngày theo dõi mở lại sau khi đóng. Thời gian gom đủ 299 đơn và cửa sổ theo dõi 7 ngày là hai khoảng khác nhau.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide hero">
+  <div class="kicker">Hết nhiệm vụ D1</div>
+  <h2>Hai màn sau là luật tắt và tiền thuê.</h2>
+  <p class="lead">D1 chỉ chọn ai được dùng trợ lý. D3 viết luật tắt khi mở 4, rồi 10, rồi 20 người. A4 và E2 nói 40 triệu tiền thuê khi còn ít đơn.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">D3 · Luật dừng lúc mở dần</div>
+  <h2>Đừng tắt vì lệch 2 điểm khi mới có 4 người.</h2>
+  <p class="where">D3 mở 4 → 10 → 20 người. Chỉ đọc kết quả chính và so chênh 2 điểm trong 3 lần đo liên tiếp sau khi đủ 20 treatment + 20 control và đủ 7 ngày theo dõi. Các bước sớm chỉ theo dõi ngưỡng an toàn cứng.</p>
+  <div class="row">
+    <div class="card grow">
+      <div class="tag ok">Tắt được ngay</div>
+      <p>Mở lại vượt 6% số đơn. Bất kỳ ca hoàn trùng nào. Nhắn khách "đã hoàn" nhưng sổ không ghi. Những việc này sai dù chỉ có 4 người.</p>
+    </div>
+    <div class="card grow">
+      <div class="tag bad">Còi mong manh</div>
+      <p>So chênh 2 điểm ở mẫu nhỏ dễ nhiễu và không phải luật dừng sớm. Dùng ngưỡng này trong 3 lần đo liên tiếp sau khi đủ 20 cụm mỗi nhánh, cỡ mẫu hiệu dụng đã tính và đủ 7 ngày theo dõi.</p>
+      <p class="example">Không suy luận hiệu quả từ các bước 4 hoặc 10 nhân viên; các bước này chỉ kiểm tra an toàn vận hành và mức sử dụng.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">A4 gặp luật dừng của D3 · E2</div>
+  <h2>Đừng cộng cả tiền thuê vào ngưỡng 8.000 đồng.</h2>
+  <p class="where">A4 cộng 40 triệu khi cả công ty chạy. Luật D3 “quá 8.000 thì thu hẹp” chỉ tính tiền máy và giờ người. E2: ít đơn thì xem lại hợp đồng, không kết luận trợ lý đắt.</p>
+  <div class="row">
+    <div class="card grow">
+      <div class="num">3.400 <small>đồng mỗi việc, chưa kể tiền thuê</small></div>
+      <p>A4, cả công ty: thêm khoảng 1.200 đồng, tổng khoảng 4.600. Chưa chạm 8.000.</p>
+    </div>
+    <div class="card grow">
+      <div class="tag bad">4 người gánh cả 40 triệu</div>
+      <div class="formula">
+        <div>40 triệu / 3.375 việc ≈ 11.900</div>
+        <div>11.900 + 3.400 ≈ 15.300 đồng</div>
+      </div>
+      <p>Luật kêu ngay dù tiền máy không đổi. Mười người vẫn khoảng 8.200. Hai mươi người khoảng 5.800 thì hết vượt.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+<div class="bar">
+  <button type="button" id="prev">Trước</button>
+  <div class="dots" id="dots"></div>
+  <span class="hint">Phím ← →</span>
+  <button type="button" id="next">Tiếp</button>
+</div>
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const dots = document.getElementById('dots');
+  let i = 0;
+  slides.forEach((_, n) => {
+    const d = document.createElement('i');
+    d.addEventListener('click', () => show(n));
+    dots.appendChild(d);
+  });
+  function show(n) {
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('on', k === i));
+    [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
+  }
+  document.getElementById('prev').onclick = () => show(i - 1);
+  document.getElementById('next').onclick = () => show(i + 1);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    if (e.key === 'ArrowLeft') show(i - 1);
+  });
+  show(0);
+</script>
+</body>
+</html>

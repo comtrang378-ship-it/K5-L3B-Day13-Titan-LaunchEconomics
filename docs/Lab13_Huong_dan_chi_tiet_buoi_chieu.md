@@ -242,7 +242,7 @@ Chỉ lấy noi_dia và hang_nang (982 yêu cầu). Các bước:
 3.  Cộng token + tool của mọi lần chạy thuộc 982 yêu cầu: 224.513 đ.
 4.  Chia tổng 10.568.513 đ cho 900 việc thành công → **11.743 đ = 0,98× của 12.000 đ** [simulated].
 
-**Độ nhạy theo phút làm lại.** Đề cho 9 phút/ca, nhưng cột `phut_lam_lai_simulated` trung bình **15,3 phút/ca** trên toàn bộ ca lam_lai (trung vị 14,5). Thay 9 bằng 15,3: 48 × 15,3 × 2.000 = 1.468.800 đ → tổng 11.173.313 đ → **12.414 đ = 1,03×** [simulated], tức xem lại 100% còn đắt hơn nhân viên tự làm. Mức hoà vốn: mỗi lần xem lại phải ≤ 5,1 phút (với 9 phút làm lại) hoặc ≤ 4,8 phút (với 15,3 phút). Ghi cả hai con số khi báo cáo B4.
+**Độ nhạy theo phút làm lại.** Đề cho 9 phút/ca, nhưng cột `phut_lam_lai_simulated` trung bình **15,3 phút/ca** trên toàn bộ ca lam_lai (trung vị 14,5). Thay 9 bằng 15,3: 48 × 15,3 × 2.000 = 1.468.800 đ → tổng 11.173.313 đ → **12.415 đ = 1,03×** [simulated] (làm tròn gần nhất), tức xem lại 100% còn đắt hơn nhân viên tự làm. Mức hoà vốn: mỗi lần xem lại phải ≤ 5,1 phút (với 9 phút làm lại) hoặc ≤ 4,8 phút (với 15,3 phút). Ghi cả hai con số khi báo cáo B4.
 
 Ý nghĩa: xem lại 100% thì trợ lý gần như không tiết kiệm được gì, vì tiền xem lại chiếm 90% chi phí. Pilot phải học được tỉ lệ xem lại có thể giảm an toàn xuống mức nào, và mỗi lần xem lại có ngắn hơn 5 phút được không.
 
@@ -331,12 +331,12 @@ Dùng z chính xác (1,95996 và 0,84162) thì ra 1.251; z làm tròn 1,96 và 0
 | Câu | Cách tính | Kết quả |
 |----|----|----|
 | a · Chia theo yêu cầu | co_mau(0.70, 0.75) | **1.251** yêu cầu mỗi nhóm |
-| b · Theo nhân viên, m = 75 | DE = 1 + 74 × 0,02 = 2,48; n = 1.251 × 2,48 | **3.103** mỗi nhóm → 42 người mỗi nhóm, tổng 84 > 40: **không đủ người** |
-| c · 20 nhân viên mỗi nhóm | giới hạn c / ICC = 20 / 0,02 | tối đa **1.000** < 1.251: **không đạt** |
+| b · Theo nhân viên, m = 75 | DE = 1 + 74 × 0,02 = 2,48; n thô = 1.251 × 2,48 | **3.103 yêu cầu thô** mỗi nhóm → 42 người mỗi nhóm, tổng 84 > 40: **không đủ người** |
+| c · 20 nhân viên mỗi nhóm | giới hạn c / ICC = 20 / 0,02 | tối đa **1.000 hiệu dụng** < 1.251: **không đạt** |
 | d · 6 depot mỗi nhóm | 6 / 0,02 | tối đa **300** |
-| e · Mức chênh 6 điểm (859/nhóm), 20 người mỗi nhóm | giải 20m / (1 + (m − 1) × 0,02) ≥ 859 | m ≥ **299** yêu cầu mỗi người (DE 6,96) |
+| e · Mức chênh 6 điểm (859 hiệu dụng/nhóm), 20 người mỗi nhóm | giải 20m / (1 + (m − 1) × 0,02) ≥ 859 | m ≥ **299** yêu cầu mỗi người = **5.980 thô/nhóm** (DE 6,96; khoảng 859 hiệu dụng) |
 
-Câu e giải tay: 20m ≥ 859 × (0,98 + 0,02m) → 2,82m ≥ 841,82 → m ≥ 298,5 → **299**.
+Câu e giải tay: 20m ≥ 859 × (0,98 + 0,02m) → 2,82m ≥ 841,82 → m ≥ 298,5 → **299**. Nhân 20 cụm thì cần 5.980 quan sát thô mỗi nhánh; 859 là cỡ mẫu hiệu dụng sau điều chỉnh DE, không phải số yêu cầu thô.
 
 ### Chọn cách chia: so sánh nhanh
 
@@ -436,7 +436,7 @@ Lấy số trực tiếp từ bảng độ nhạy. Ít nhất hai dòng, ví d�
 | Rủi ro | Tác động đã tính | Dấu hiệu theo dõi | Hành động | Người phụ trách |
 |----|----|----|----|----|
 | Số ca làm lại tăng gấp đôi | +51,8%, lên 6.787 đ [sim] | Tỉ lệ làm lại theo tuần > 7% (đợt chạy thử: 4,9% trong phạm vi) | Thu hẹp về noi_dia, rà 20 trace làm lại | PM trợ lý hoàn phí |
-| Phải xem lại 100% kéo dài | 11.743 đ = 0,98× (12.414 đ = 1,03× nếu làm lại 15,3 phút như dữ liệu) [sim] | % yêu cầu được xem lại còn > 50% cuối bước 0.25 | Giảm xem lại theo bậc khi tỉ lệ sửa + bỏ < 15% | Trưởng nhóm CSKH |
+| Phải xem lại 100% kéo dài | 11.743 đ = 0,98× (12.415 đ = 1,03× nếu làm lại 15,3 phút như dữ liệu) [sim] | % yêu cầu được xem lại còn > 50% cuối bước 0.25 | Giảm xem lại theo bậc khi tỉ lệ sửa + bỏ < 15% | Trưởng nhóm CSKH |
 | Khối lượng thấp hơn dự kiến | Cố định 40 triệu/tháng: +1.185 đ/việc ở 45.000 yc/tháng, +2.370 đ/việc nếu còn một nửa [sim] | Số việc thành công theo tuần < 50% kế hoạch | Không mở rộng pilot, xem lại hợp đồng chi phí cố định | PM trợ lý hoàn phí |
 
 ### E3 · Hồ sơ launch v0 (8 phút)

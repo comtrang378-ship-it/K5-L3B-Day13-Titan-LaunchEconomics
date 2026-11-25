@@ -19,12 +19,12 @@ Số tính bằng `src/lab13.py`. Mọi con số tính từ cột `_simulated` g
 | Trong đó, phần của lần chạy thứ 2 và 3 | 93.804 | attempt lớn hơn 1 | đo từ trace |
 | Xem lại | 1.780.000 | `phut_xem_lai_simulated` | simulated |
 | Làm lại | 2.264.000 | `phut_lam_lai_simulated` | simulated |
-| Tổng chi phí | 4.373.585 | | |
+| Tổng chi phí | 4.373.585 | | có phần simulated |
 | Số việc thành công | 978 | `ket_qua` | |
-| Chi phí mỗi việc thành công | 4.472 | | |
+| Chi phí mỗi việc thành công | 4.472 | | simulated |
 | Hoá đơn token và tool chia cho số yêu cầu | 274,7 | | đo từ trace |
 
-- Chi phí mỗi việc thành công gấp bao nhiêu lần "hoá đơn chia số yêu cầu"? **16,3 lần** (4.472 / 274,7).
+- Chi phí mỗi việc thành công gấp bao nhiêu lần "hoá đơn chia số yêu cầu"? **16,3 lần** (4.472 / 274,7) [simulated].
 - Khoản nào chiếm tỉ trọng lớn nhất trong tổng chi phí, bao nhiêu phần trăm? **Làm lại: 51,8%** tổng chi phí [simulated].
 
 ## A3 · Tách theo loại yêu cầu
@@ -70,13 +70,13 @@ Số tính bằng `src/lab13.py`. Mọi con số tính từ cột `_simulated` g
 
 | Giới hạn | Tổng chi phí trợ lý | Số yêu cầu không thành công | Chi phí cả hệ thống | Chi phí mỗi việc thành công |
 | --- | ---: | ---: | ---: | ---: |
-| 1 lần | 3.621.781 đ [simulated] | 319 | 7.449.781 đ [simulated] | 4.111 đ |
-| 2 lần | 4.093.220 đ [simulated] | 234 | 6.901.220 đ [simulated] (rẻ nhất) | 4.237 đ |
-| 3 lần | 4.373.585 đ [simulated] | 222 | 7.037.585 đ [simulated] | 4.472 đ |
+| 1 lần | 3.621.781 đ [simulated] | 319 | 7.449.781 đ [simulated] | 4.111 đ [simulated] |
+| 2 lần | 4.093.220 đ [simulated] | 234 | 6.901.220 đ [simulated] (rẻ nhất) | 4.237 đ [simulated] |
+| 3 lần | 4.373.585 đ [simulated] | 222 | 7.037.585 đ [simulated] | 4.472 đ [simulated] |
 
 - Giới hạn 2 lần rẻ nhất cho công ty (6.901.220 đ); không trùng: CPS thấp nhất là 1 lần (4.111 đ), nhưng thêm 85 việc phải chuyển nhân viên so với giới hạn 2 lần.
 
 ## B4 · Nếu phải xem lại tất cả
 
 - Chi phí mỗi việc thành công khi xem lại 100% (`noi_dia` + `hang_nang`): **11.743 đ = 0,98×** baseline [simulated].
-- Pilot cần đo xem có thể giảm an toàn thời gian/tỉ lệ xem lại không: với 15,3 phút làm lại mỗi ca, CPS tăng lên **12.414 đ = 1,03×**; mỗi lần xem lại cần ngắn hơn khoảng 4,8 phút để thấp hơn baseline [simulated].
+- Pilot cần đo xem có thể giảm an toàn thời gian/tỉ lệ xem lại không: với 15,3 phút làm lại mỗi ca, CPS tăng lên **12.415 đ = 1,03×** (làm tròn gần nhất); mỗi lần xem lại cần ngắn hơn khoảng 4,8 phút để thấp hơn baseline [simulated].

@@ -17,19 +17,56 @@ BASELINE = 12000    # đồng cho 1 yêu cầu khi nhân viên tự làm (6 phú
 # ---------- Nhiệm vụ A1 · Kinh tế của việc chạy lại ----------
 # TODO CP1: viết ba hàm dưới đây cho tới khi kiem_tra_dap_an_biet_truoc() in ĐẠT.
 def so_lan_chay_ky_vong(p, k=None):
-    """Số lần chạy trung bình cho 1 yêu cầu khi mỗi lần đúng với xác suất p.
-    k = số lần chạy tối đa; k=None nghĩa là chạy lại đến khi đúng."""
-    raise NotImplementedError('VIẾT Ở ĐÂY')
+    """
+    Số lần chạy trung bình cho 1 yêu cầu.
+    k=None: chạy lại đến khi đúng.
+    """
+    if not 0 <= p <= 1:
+        raise ValueError("p phải nằm trong khoảng [0, 1]")
 
+    if k is None:
+        if p == 0:
+            return float("inf")
+        return 1 / p
+
+    if k < 1:
+        raise ValueError("k phải >= 1")
+
+    if p == 0:
+        return float(k)
+
+    return (1 - (1 - p) ** k) / p
 
 def ti_le_thanh_cong(p, k=None):
-    """Xác suất yêu cầu thành công sau tối đa k lần chạy."""
-    raise NotImplementedError('VIẾT Ở ĐÂY')
+    """
+    Xác suất yêu cầu thành công sau tối đa k lần chạy.
+    """
+    if not 0 <= p <= 1:
+        raise ValueError("p phải nằm trong khoảng [0, 1]")
+
+    if k is None:
+        return 1.0 if p > 0 else 0.0
+
+    if k < 1:
+        raise ValueError("k phải >= 1")
+
+    return 1 - (1 - p) ** k
+
 
 
 def he_so_chi_phi_moi_viec_thanh_cong(p, k=None):
-    """Chi phí mỗi việc thành công, tính bằng bội số của giá một lần chạy."""
-    raise NotImplementedError('VIẾT Ở ĐÂY')
+    """
+    Chi phí mỗi việc thành công tính theo bội số
+    giá của một lần chạy.
+    """
+    so_lan = so_lan_chay_ky_vong(p, k)
+    thanh_cong = ti_le_thanh_cong(p, k)
+
+    if thanh_cong == 0:
+        return float("inf")
+
+    return so_lan / thanh_cong
+
 
 
 def kiem_tra_dap_an_biet_truoc():
@@ -42,15 +79,94 @@ def kiem_tra_dap_an_biet_truoc():
 
 # ---------- Nhiệm vụ A2 · Mô hình chi phí từ trace ----------
 # TODO CP1: viết mo_hinh; CP2 gọi lại hàm này với tham số giá và hệ số đã đổi.
-def mo_hinh(runs, reqs, gia_vao=26, gia_ra=130, gia_tool=15, luong_phut=2000,
-            he_so_xem_lai=1.0, he_so_lam_lai=1.0, max_lan_chay=None):
-    """Trả về dict gồm: token, tool, xem_lai, lam_lai, tong, thanh_cong, cps (chi phí mỗi việc thành công).
-    - token, tool: cộng trên MỌI lần chạy trong runs, kể cả lần lỗi.
-    - xem_lai, lam_lai: số phút (cột *_simulated) × LUONG_PHUT. Đây là số GIẢ LẬP, phải ghi nhãn simulated khi báo cáo.
-    - thanh_cong: số yêu cầu có ket_qua == 'thanh_cong'.
-    - Các tham số giá/hệ số/max_lan_chay dùng cho Nhiệm vụ B (độ nhạy, giới hạn số lần chạy); giữ mặc định ở A2.
+def mo_hinh(
+    runs,
+    reqs,
+    gia_vao=26,
+    gia_ra=130,
+    gia_tool=15,
+    luong_phut=2000,
+    he_so_xem_lai=1.0,
+    he_so_lam_lai=1.0,
+    max_lan_chay=None
+):
     """
-    raise NotImplementedError('VIẾT Ở ĐÂY')
+    Tính tổng chi phí của Agent dựa trên trace.
+
+    Token và tool tính trên mọi lần chạy.
+    Thời gian xem lại và làm lại lấy từ dữ liệu simulated.
+    """
+
+    # Giới hạn số lần chạy nếu được yêu cầu
+    if max_lan_chay is not None:
+        runs_tinh = runs[runs["attempt"] <= max_lan_chay]
+    else:
+        runs_tinh = runs
+
+    # 1. Chi phí token
+    chi_phi_token_vao = (
+        runs_tinh["tokens_in"].sum() / 1000 * gia_vao
+    )
+
+    chi_phi_token_ra = (
+        runs_tinh["tokens_out"].sum() / 1000 * gia_ra
+    )
+
+    token = chi_phi_token_vao + chi_phi_token_ra
+
+    # 2. Chi phí gọi tool
+    tool = runs_tinh["tool_calls"].sum() * gia_tool
+
+    # 3. Chi phí nhân viên xem lại (simulated)
+    phut_xem_lai = (
+        pd.to_numeric(
+            reqs["phut_xem_lai_simulated"]
+        ).sum()
+    )
+
+    xem_lai = (
+        phut_xem_lai
+        * luong_phut
+        * he_so_xem_lai
+    )
+
+    # 4. Chi phí nhân viên làm lại (simulated)
+    phut_lam_lai = (
+        pd.to_numeric(
+            reqs["phut_lam_lai_simulated"]
+        ).sum()
+    )
+
+    lam_lai = (
+        phut_lam_lai
+        * luong_phut
+        * he_so_lam_lai
+    )
+
+    # 5. Tổng chi phí
+    tong = token + tool + xem_lai + lam_lai
+
+    # 6. Số yêu cầu thành công
+    thanh_cong = (
+        reqs["ket_qua"] == "thanh_cong"
+    ).sum()
+
+    # 7. Chi phí mỗi việc thành công
+    cps = (
+        tong / thanh_cong
+        if thanh_cong > 0
+        else float("inf")
+    )
+
+    return {
+        "token": token,
+        "tool": tool,
+        "xem_lai": xem_lai,
+        "lam_lai": lam_lai,
+        "tong": tong,
+        "thanh_cong": thanh_cong,
+        "cps": cps
+    }
 
 
 if __name__ == '__main__':

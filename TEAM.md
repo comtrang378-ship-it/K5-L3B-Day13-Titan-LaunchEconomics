@@ -18,8 +18,8 @@
 
 ## Đóng góp và bằng chứng
 
-- **Nguyễn Anh Tú:** cung cấp kết quả A1/A2 để ghi nhận; xác nhận hai thành viên đã gắn nhãn độc lập 20 ca theo vai kiểm thử và lập trình web, rồi rà soát bộ nhãn thống nhất; xác nhận lựa chọn pilot và ngưỡng; yêu cầu hoàn thiện, rà soát các hồ sơ A–E. Tên cụ thể của hai người gắn nhãn còn cần bổ sung. Bằng chứng: [bảng chi phí](report/team/bang_chi_phi.md), [bảng lỗi](report/team/bang_loi.md), [kế hoạch pilot](report/team/pilot_plan.yaml), [chỉ số](report/team/chi_so.md), [hồ sơ launch](report/team/ho_so_launch_v0.md), [báo cáo cá nhân](report/team/2A202604088_NguyenAnhTu.md).
-- **Thành viên 2–4:** chưa có tên và thông tin cá nhân. Nhóm trưởng xác nhận hai thành viên đã gắn nhãn độc lập ở vai kiểm thử và lập trình web; cần xác định tên hai người và bổ sung vai trò, đóng góp, bằng chứng trước khi nộp.
+- **Nguyễn Anh Tú:** cung cấp kết quả A1/A2 để ghi nhận; rà soát 20 ca lỗi và bộ nhãn; xác nhận lựa chọn pilot và ngưỡng; yêu cầu hoàn thiện, rà soát các hồ sơ A–E. Bằng chứng: [bảng chi phí](report/team/bang_chi_phi.md), [bảng lỗi](report/team/bang_loi.md), [kế hoạch pilot](report/team/pilot_plan.yaml), [chỉ số](report/team/chi_so.md), [hồ sơ launch](report/team/ho_so_launch_v0.md), [báo cáo cá nhân](report/team/2A202604088_NguyenAnhTu.md).
+- **Thành viên 2–4:** chưa có tên và thông tin cá nhân. Hai thành viên có lập phiếu theo vai kiểm thử và lập trình web, nhưng một người đã tiếp cận nhãn tham khảo trước khi đối chiếu; kết quả 20/20 chưa đủ chứng minh đồng thuận độc lập. Cần xác định tên, vai trò, đóng góp và bổ sung bằng chứng gắn nhãn lại trước khi nộp.
 
 Bốn vai của lab:
 

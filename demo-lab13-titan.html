@@ -239,7 +239,7 @@
       <div class="wrap">
         <div class="eyebrow">C · Google PAIR</div>
         <h2>20 ca lỗi, 5 nguyên nhân gốc.</h2>
-        <p class="section-intro">Hai thành viên ở vai kiểm thử và lập trình web đã gắn nhãn độc lập 20 ca; đồng thuận 20/20 (100%). Tên cụ thể cần được bổ sung vào TEAM.</p>
+        <p class="section-intro">Hai phiếu khớp 20/20, nhưng một người đã thấy nhãn tham khảo qua AI trước khi đối chiếu; chưa đủ làm bằng chứng đồng thuận độc lập. Cần bộ ca mới hoặc phương án thay thế từ giảng viên.</p>
         <div class="grid three">
           <article class="card"><span class="tag blue">Do người dùng · 4</span><div class="case-list"><span class="case">1</span><span class="case">6</span><span class="case">9</span><span class="case">14</span></div><p class="small">Đầu vào hoặc thao tác của khách sai.</p></article>
           <article class="card"><span class="tag red">Hệ thống · 5</span><div class="case-list"><span class="case">2</span><span class="case">7</span><span class="case">8</span><span class="case">15</span><span class="case">20</span></div><p class="small">Agent, tool hoặc tích hợp làm sai; lỗi có thể nhìn thấy.</p></article>
@@ -265,7 +265,7 @@
       <div class="wrap">
         <div class="eyebrow">D · Thiết kế pilot</div>
         <h2>Chia theo nhân viên, chấp nhận MDE 6 điểm.</h2>
-        <p class="section-intro">40 nhân viên không đủ để phát hiện mục tiêu 5 điểm theo cụm. Chọn 20 người mỗi nhánh, ngẫu nhiên phân tầng theo depot; nếu tác động thật chỉ 5 điểm, power khoảng 0,64.</p>
+        <p class="section-intro">40 nhân viên không đủ để phát hiện mục tiêu 5 điểm theo cụm. Chọn 20 người mỗi nhánh, ngẫu nhiên phân tầng theo depot; nếu tác động thật chỉ 5 điểm, power khoảng 0,64. Bậc 50% có thể kéo dài tối đa 15 ngày làm việc để đủ mẫu.</p>
         <div class="scroll">
           <table>
             <thead><tr><th>Câu D1</th><th>Tính toán</th><th>Kết luận</th></tr></thead>
@@ -319,12 +319,13 @@
       <div class="wrap">
         <div class="eyebrow">Kết luận Gate 2a</div>
         <h2>Go có điều kiện — không phải mở rộng vận hành.</h2>
-        <p class="section-intro">Đề xuất chỉ bắt đầu pilot cho <strong>noi_dia</strong> và <strong>hang_nang</strong>. Điều kiện dưới đây cần có bằng chứng trước mốc quyết định 2027-01-05.</p>
+        <p class="section-intro">Đề xuất chỉ bắt đầu pilot cho <strong>noi_dia</strong> và <strong>hang_nang</strong>. Ngày 2027-01-05 là mốc mục tiêu; nếu chưa khóa mẫu và đủ 7 ngày theo dõi thì dời quyết định.</p>
         <div class="grid two">
           <article class="card"><span class="tag amber">Điều kiện 1 · Kỹ sư trưởng agent</span><p>Sửa lỗi sổ cái 503 và chống hoàn trùng (ca 7, 20); kiểm thử gửi lặp để chứng minh mỗi yêu cầu chỉ hoàn một lần.</p><p class="small">Hạn: 2027-01-05</p></article>
-          <article class="card"><span class="tag amber">Điều kiện 2 · Giám đốc vận hành</span><p>Chấp nhận 20 nhân viên mỗi nhánh, 5.980 yêu cầu thô (859 hiệu dụng), MDE 6 điểm và power 0,64 nếu tác động thật chỉ 5 điểm.</p><p class="small">Hạn: 2027-01-05, trước phân nhóm</p></article>
+          <article class="card"><span class="tag amber">Điều kiện 2 · Giám đốc vận hành</span><p>Chấp nhận 20 nhân viên mỗi nhánh, 5.980 yêu cầu thô (859 hiệu dụng), MDE 6 điểm và power 0,64 nếu tác động thật chỉ 5 điểm.</p><p class="small">Quyết định chỉ sau khi khóa mẫu và đủ 7 ngày theo dõi.</p></article>
           <article class="card"><span class="tag amber">Điều kiện 3 · Người phụ trách chỉ số</span><p>Bật event có `trace_id`; thay phút nhân viên `simulated` bằng số đo thật sau tuần đầu.</p><p class="small">Kiểm tra trước pilot; báo cáo sau tuần 1</p></article>
-          <article class="card"><span class="tag green">Nếu không đạt</span><p>Không bật pilot; giữ No-go tới khi có bằng chứng và hội đồng xem xét lại.</p></article>
+          <article class="card"><span class="tag amber">Điều kiện 4 · Trưởng nhóm CSKH</span><p>Chỉ giảm xem lại khi chi phí hệ thống thực tế &lt;12.000 đ/yêu cầu, không có hoàn trùng/sai tiền trong mẫu, và 3 lần rà có mở lại ≤6%, chênh với control &lt;2 điểm.</p></article>
+          <article class="card"><span class="tag green">Nếu chưa đủ mẫu / không đạt</span><p>Không kết luận hiệu quả hay mở bậc tiếp; giữ No-go, dời quyết định hoặc thiết kế lại. Báo KTC 95% có điều chỉnh cụm.</p></article>
         </div>
       </div>
     </section>
@@ -342,6 +343,7 @@
               <a href="report/team/pilot_plan.yaml">Pilot plan D</a>
               <a href="report/team/chi_so.md">Chỉ số E</a>
               <a href="report/team/ho_so_launch_v0.md">Hồ sơ launch</a>
+              <a href="report/team/phieu_cham.md">Phiếu đối chiếu Titan–Ghidorah</a>
               <a href="report/team/group_report.md">Báo cáo nhóm</a>
               <a href="report/team/2A202604088_NguyenAnhTu.md">Báo cáo cá nhân</a>
               <a href="SUBMISSION.md">Hướng dẫn nộp</a>
@@ -350,8 +352,8 @@
           <article class="pending">
             <h3>Chưa hoàn tất — không giả lập bằng chứng</h3>
             <ul>
-              <li>Chưa có thông tin, vai trò và báo cáo cá nhân của ba thành viên còn lại; chưa ghi tên hai người gắn nhãn vào TEAM.</li>
-              <li>Phiếu chấm chéo chưa có số nhóm và hồ sơ của nhóm peer.</li>
+              <li>Thiếu tên, vai trò và báo cáo cá nhân của ba thành viên; CP3 cần bộ ca mới vì nhãn tham khảo đã bị lộ trước khi so.</li>
+              <li>Phiếu Titan–Ghidorah chưa chốt điểm vì còn thiếu hồ sơ kết quả đầy đủ của Ghidorah.</li>
             </ul>
           </article>
         </div>

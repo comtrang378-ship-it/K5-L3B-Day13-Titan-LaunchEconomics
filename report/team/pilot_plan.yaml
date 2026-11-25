@@ -24,8 +24,13 @@ pilot:
     randomized: true
     stratification: "depot"
     seed: 20261125                # seed kế hoạch; lưu bảng phân nhóm trước khi bắt đầu
-  rollout: [0.10, 0.25, 0.50]     # % của 40 nhân viên ở treatment: 4, 10, 20; mỗi bước một tuần
-  rollout_note: "20 nhân viên đối chứng chạy xuyên suốt; chỉ đọc kết quả chính khi đủ 20 treatment và 20 control, sau khi đủ 7 ngày theo dõi."
+  rollout: [0.10, 0.25, 0.50]     # % của 40 nhân viên ở treatment: 4, 10, 20
+  rollout_note: "20 nhân viên đối chứng chạy xuyên suốt. Hai bậc đầu dự kiến một tuần; tại bậc 50% kiểm tiến độ sau tuần đầu và giữ nguyên hai nhánh cho tới khi đủ mẫu."
+  sample_collection:
+    target_requests_per_staff_each_arm: 299
+    max_business_days_at_full_rollout: 15
+    decision_lag_after_last_request_days: 8
+    shortfall_action: "Nếu không đủ 299 yêu cầu/người trong 15 ngày làm việc, không kết luận hiệu quả; giữ No-go và trình thiết kế lại."
   primary_metric:
     name: dong_trong_24h_khong_mo_lai_7_ngay
     baseline: 0.70
@@ -40,13 +45,23 @@ pilot:
   identifiability:
     concurrent_control: "Có: 20 nhân viên đối chứng chạy cùng 20 nhân viên treatment trong cùng tuần và depot."
     spillover_risk: "Có nguy cơ chia sẻ câu trả lời trong depot; giới hạn quyền dùng theo tài khoản và ghi log mở trợ lý theo staff_id."
-    predeclared: "Có: chốt chỉ số chính, ngưỡng dừng, rollout và ngày quyết định trước khi pilot bắt đầu."
+    predeclared: "Có: chốt chỉ số chính, ngưỡng dừng, rollout, giới hạn thu mẫu và quy tắc quyết định trước khi pilot bắt đầu."
   stop_rules:
     - "NẾU tỉ lệ mo_lai_trong_7_ngay vượt trần 6% hoặc có bất kỳ ca hoàn trùng / báo đã hoàn nhưng sổ cái không có bản ghi TRONG bất kỳ lần kiểm tra nào THÌ Giám đốc vận hành tắt trợ lý trong 30 phút KHÔNG THÌ không được chuyển sang bước rollout tiếp theo."
     - "NẾU tỉ lệ mo_lai_trong_7_ngay của treatment cao hơn control ít nhất 2 điểm phần trăm TRONG 3 lần đo ngày liên tiếp sau khi đủ 20 nhân viên mỗi nhánh và đủ 7 ngày theo dõi THÌ Giám đốc vận hành tạm dừng, rà soát dữ liệu và quyết định tiếp tục hay rollback KHÔNG THÌ chỉ chuyển bước khi cửa sổ theo dõi đã đủ và ngưỡng an toàn cứng chưa bị chạm."
     - "NẾU chi phí mỗi việc thành công vượt 8.000 đ TRONG 2 tuần liên tiếp THÌ PM thu hẹp phạm vi về noi_dia và giới hạn tối đa 2 lần chạy KHÔNG THÌ không được mở rộng sang hang_nang."
     - "NẾU tỉ lệ bỏ qua gợi ý vượt 40% TRONG 1 tuần THÌ Trưởng nhóm CSKH phỏng vấn 5 nhân viên trong 3 ngày KHÔNG THÌ không được chuyển bước rollout tiếp theo."
-  interim_looks: "Ở bước 4 và 10 treatment: chỉ kiểm tra ngưỡng an toàn cứng (mở lại >6%, hoàn trùng hoặc sổ cái lệch); chỉ so chênh 2 điểm sau khi đủ 20 treatment + 20 control và đủ 7 ngày theo dõi."
+  review_reduction_gate:
+    owner: "Trưởng nhóm CSKH"
+    method: "Giảm tỉ lệ xem lại từng bậc trên ca noi_dia chuẩn."
+    system_cost_below_vnd_per_request: 12000
+    require_no_duplicate_or_wrong_refund_in_audit: true
+    reopen_rate_max: 0.06
+    reopen_difference_vs_control_max: 0.02
+    consecutive_reviews_required: 3
+  interim_looks: "Ở bước 4 và 10 treatment: chỉ kiểm tra ngưỡng an toàn cứng (mở lại >6%, hoàn trùng hoặc sổ cái lệch); không đọc hiệu quả chính. Chỉ so chênh 2 điểm sau khi đủ 20 treatment + 20 control và đủ 7 ngày theo dõi."
+  decision_rule: "Báo chênh lệch treatment-control và khoảng tin cậy 95% có điều chỉnh cụm. Nếu cận trên thấp hơn +5 điểm phần trăm, dừng vì chưa ủng hộ mức cải thiện tối thiểu. Nếu khoảng tin cậy chứa cả 0 và +5 điểm, kết luận chưa rõ, giữ No-go và thiết kế lại. Chỉ kéo dài thu mẫu theo giới hạn đã đăng ký trước; không xem hiệu quả chính sớm."
+  decision_timing: "2027-01-05 là ngày mục tiêu; chỉ ra quyết định sau khi khóa đủ mẫu, hoàn tất 7 ngày theo dõi và rà soát an toàn; sớm nhất 8 ngày sau yêu cầu cuối."
   rollback: "Giám đốc vận hành bật cờ tắt; hiệu lực trong 30 phút; khách được chuyển sang luồng nhân viên tự xử lý."
   decision_date: "2027-01-05"
   simulated_inputs:

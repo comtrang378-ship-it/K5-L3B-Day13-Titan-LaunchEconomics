@@ -2,9 +2,9 @@
 
 20 ca lỗi nằm trong `docs/Ngay13_Lab13_De_bai_hoc_vien.docx`. Năm loại theo Google PAIR: **Do người dùng · Hệ thống · Ngữ cảnh · Giới hạn hệ thống · Ngầm**. Gắn nhãn theo nguyên nhân gốc, không theo chỗ cần sửa.
 
-## Hai bộ nhãn độc lập và đồng thuận
+## Hai bộ nhãn và giới hạn của kết quả đồng thuận
 
-Theo xác nhận của nhóm trưởng, hai thành viên đã gắn nhãn độc lập trước khi trao đổi: vai 1 là kiểm thử, vai 2 là lập trình web. Danh tính cụ thể của hai thành viên chưa được cung cấp trong `TEAM.md`; cần bổ sung trước khi nộp.
+Hai thành viên đã lập nhãn riêng theo vai kiểm thử và lập trình web; tuy nhiên, theo phản hồi duyệt chéo của Ghidorah, Quốc đã tiếp cận nhãn tham khảo qua công cụ AI trước khi đối chiếu phiếu gốc của Dũng. Vì vậy, 20/20 là mức trùng quan sát được nhưng không phải bằng chứng đồng thuận độc lập đáng tin cậy. Tên đầy đủ và MSSV của hai thành viên cũng cần bổ sung vào `TEAM.md`.
 
 Hai vai phân loại theo nguyên nhân gốc: kiểm thử tập trung vào biểu hiện và khả năng phát hiện lỗi; lập trình web tập trung vào nguồn lỗi trong luồng xử lý, dữ liệu và tích hợp.
 
@@ -31,11 +31,13 @@ Hai vai phân loại theo nguyên nhân gốc: kiểm thử tập trung vào bi�
 | 19 | Giới hạn hệ thống | Giới hạn hệ thống | Có | Giới hạn hệ thống |
 | 20 | Hệ thống | Hệ thống | Có | Hệ thống |
 
-**Tỉ lệ đồng thuận:** 20 / 20 = **100%** (vượt ngưỡng 80%); người dùng đã rà soát bộ nhãn thống nhất.
+**Mức trùng quan sát:** 20 / 20 = **100%**. Do có tiếp cận nhãn tham khảo trước khi so, không dùng con số này để kết luận CP3 đạt ngưỡng đồng thuận độc lập 80%.
+
+**Việc cần làm:** xin giảng viên bộ ca mới hoặc phương án đánh giá thay thế; nếu được làm lại, hai người lưu riêng phiếu gắn nhãn trước khi đối chiếu. Chưa đánh dấu CP3 hoàn tất cho tới khi có bằng chứng hợp lệ.
 
 ## Quy tắc phân biệt cho các ca dễ lẫn
 
-Hai lượt gắn nhãn không có ca bất đồng. Các quy tắc gốc dưới đây giúp phân biệt các ca dễ lẫn:
+Hai phiếu hiện tại không có ca bất đồng; việc tiếp cận nhãn tham khảo có thể làm tăng mức trùng. Các quy tắc gốc dưới đây vẫn hữu ích khi gắn nhãn lại:
 
 - Ca 6 và 9 là **Do người dùng** vì nguyên nhân gốc là khách chọn sai mục hoặc nhập sai mã; việc trợ lý không gợi ý là hướng khắc phục.
 - Ca 13 là **Giới hạn hệ thống** vì yêu cầu ngoài phạm vi, dù trợ lý xử lý giới hạn chưa tốt.
